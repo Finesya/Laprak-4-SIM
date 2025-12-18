@@ -566,16 +566,43 @@
     </footer>
     <!--End Footer-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzWPb5M6e2_anrQHoYZAsiIe1ri7nqxr-Or3gRBumqh9OSjEExXEDjb3cFB_C-JNaBT/exec'
-    const form = document.forms['Tik-Tak-Top-Course']
+<script>
+  // PENTING: Pastikan ini URL Web App PUNYA KAMU SENDIRI (hasil deploy)
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzWPb5M6e2_anrQHoYZAsiIe1ri7nqxr-Or3gRBumqh9OSjEExXEDjb3cFB_C-JNaBT/exec';
+  
+  // PERBAIKAN: Nama form harus sama persis dengan name="" di HTML
+  const form = document.forms['Tik-Tak-Top-Course'];
+  
+  // Tambahan: Definisi tombol loading biar keren
+  const btnKirim = document.querySelector('.btn-kirim');
+  const btnLoading = document.querySelector('.btn-loading');
 
-    form.addEventListener('submit', e => {
-    e.preventDefault()
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    
+    // 1. Munculkan loading, hilangkan tombol kirim
+    btnLoading.classList.remove('d-none');
+    btnKirim.classList.add('d-none');
+
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      .then(response => console.log('Success!', response))
-      .catch(error => console.error('Error!', error.message))
-    })
+      .then(response => {
+        // 2. Jika Berhasil
+        btnLoading.classList.add('d-none');
+        btnKirim.classList.remove('d-none');
+        
+        console.log('Success!', response);
+        alert('Data Berhasil Terkirim!'); // Munculkan pesan sukses
+        form.reset(); // Kosongkan form
+      })
+      .catch(error => {
+        // 3. Jika Gagal
+        btnLoading.classList.add('d-none');
+        btnKirim.classList.remove('d-none');
+        
+        console.error('Error!', error.message);
+        alert('Gagal mengirim! Pastikan internet lancar.');
+      });
+  });
 </script>
   </body>
   <!-- Body End -->
